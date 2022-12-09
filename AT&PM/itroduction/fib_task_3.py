@@ -4,13 +4,20 @@ def fib_mod(n, m):
     elif n >= 1:
         left, right = 1, 1
         arr = [0, 1, 1]
-        for i in range(2, n):
+        indexes = [0]
+
+        # записываем все разности для поиска периода
+        for i in range(3, 6 * m):
             left, right = right % m, (left + right) % m
-            if right not in arr:
-                arr.append(right)
-            else:
-                break
-        return arr[n%len(arr)]
+            arr.append(right)
+            if right == 1 and left == 0:
+                indexes.append(i - 1)
+
+        # проверка на период
+        find_p = set()
+        for j in range(len(indexes) - 1):
+            find_p.add(indexes[j + 1] - indexes[j])
+        return arr[n % (find_p.pop())]
 
 def main():
     n, m = map(int, input().split())
